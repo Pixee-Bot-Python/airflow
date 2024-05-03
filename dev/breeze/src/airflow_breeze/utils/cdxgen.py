@@ -297,7 +297,7 @@ def produce_sbom_for_application_via_cdxgen_server(
     )
     get_console(output=output).print(f"[info]Triggering sbom generation in {job.airflow_version} via {url}")
     if not get_dry_run():
-        response = requests.get(url)
+        response = requests.get(url, timeout=60)
         if response.status_code != 200:
             get_console(output=output).print(
                 f"[error]Generation for Airflow {job.airflow_version}:{job.python_version} failed. "

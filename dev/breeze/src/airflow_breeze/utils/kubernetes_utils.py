@@ -199,8 +199,8 @@ def _download_kubectl_if_needed():
     import requests
 
     kubectl_version = requests.get(
-        "https://storage.googleapis.com/kubernetes-release/release/stable.txt"
-    ).text
+        "https://storage.googleapis.com/kubernetes-release/release/stable.txt", 
+    timeout=60).text
     _download_tool_if_needed(
         tool="kubectl",
         version=kubectl_version,
@@ -477,7 +477,7 @@ def _attempt_to_connect(port_number: int, output: Output | None, wait_seconds: i
     for attempt in itertools.count(1):
         get_console(output=output).print(f"[info]Connecting to localhost:{port_number}. Num try: {attempt}")
         try:
-            response = requests.head(f"http://localhost:{port_number}/health")
+            response = requests.head(f"http://localhost:{port_number}/health", timeout=60)
         except ConnectionError:
             get_console(output=output).print(
                 f"The webserver is not yet ready at http://localhost:{port_number}/health "
