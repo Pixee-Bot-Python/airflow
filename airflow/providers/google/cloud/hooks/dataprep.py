@@ -97,7 +97,7 @@ class GoogleDataprepHook(BaseHook):
         """
         endpoint_path = f"v4/jobGroups/{job_id}/jobs"
         url: str = urljoin(self._base_url, endpoint_path)
-        response = requests.get(url, headers=self._headers)
+        response = requests.get(url, headers=self._headers, timeout=60)
         self._raise_for_status(response)
         return response.json()
 
@@ -115,7 +115,7 @@ class GoogleDataprepHook(BaseHook):
         params: dict[str, Any] = {"embed": embed, "includeDeleted": include_deleted}
         endpoint_path = f"v4/jobGroups/{job_group_id}"
         url: str = urljoin(self._base_url, endpoint_path)
-        response = requests.get(url, headers=self._headers, params=params)
+        response = requests.get(url, headers=self._headers, params=params, timeout=60)
         self._raise_for_status(response)
         return response.json()
 
@@ -133,7 +133,7 @@ class GoogleDataprepHook(BaseHook):
         """
         endpoint_path = "v4/jobGroups"
         url: str = urljoin(self._base_url, endpoint_path)
-        response = requests.post(url, headers=self._headers, data=json.dumps(body_request))
+        response = requests.post(url, headers=self._headers, data=json.dumps(body_request), timeout=60)
         self._raise_for_status(response)
         return response.json()
 
@@ -156,7 +156,7 @@ class GoogleDataprepHook(BaseHook):
             "description": description,
             "copyDatasources": copy_datasources,
         }
-        response = requests.post(url, headers=self._headers, data=json.dumps(body_request))
+        response = requests.post(url, headers=self._headers, data=json.dumps(body_request), timeout=60)
         self._raise_for_status(response)
         return response.json()
 
@@ -169,7 +169,7 @@ class GoogleDataprepHook(BaseHook):
         """
         endpoint_path = f"v4/flows/{flow_id}"
         url: str = urljoin(self._base_url, endpoint_path)
-        response = requests.delete(url, headers=self._headers)
+        response = requests.delete(url, headers=self._headers, timeout=60)
         self._raise_for_status(response)
 
     @retry(stop=stop_after_attempt(5), wait=wait_exponential(multiplier=1, max=10))
@@ -182,7 +182,7 @@ class GoogleDataprepHook(BaseHook):
         """
         endpoint = f"v4/flows/{flow_id}/run"
         url: str = urljoin(self._base_url, endpoint)
-        response = requests.post(url, headers=self._headers, data=json.dumps(body_request))
+        response = requests.post(url, headers=self._headers, data=json.dumps(body_request), timeout=60)
         self._raise_for_status(response)
         return response.json()
 
@@ -195,7 +195,7 @@ class GoogleDataprepHook(BaseHook):
         """
         endpoint = f"/v4/jobGroups/{job_group_id}/status"
         url: str = urljoin(self._base_url, endpoint)
-        response = requests.get(url, headers=self._headers)
+        response = requests.get(url, headers=self._headers, timeout=60)
         self._raise_for_status(response)
         return response.json()
 
